@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\TodoController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    
+    Route::get('/logout', [UserController::class, 'logout'])->name('logout.api');
+    Route::get('/user', [UserController::class, 'userdata'])->name('user.api');
+    Route::post('/todo', [TodoController::class, 'index'])->name('add-todo.api');
 });
+
+Route::post('/register', [AuthController::class, 'register'])->name('register.api');
+Route::post('/login', [AuthController::class, 'login'])->name('login.api');
